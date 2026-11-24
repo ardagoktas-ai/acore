@@ -1,0 +1,6 @@
+h100_trained/
+.yonetici/
+*.pt
+*.zip
+.venv/
+__pycache__/

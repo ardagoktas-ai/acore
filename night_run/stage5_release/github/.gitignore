@@ -1,0 +1,38 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+.env
+
+# Driver build output
+driver/driver/build/
+acore/npu_driver/build/
+*.dll
+*.so
+*.dylib
+*.o
+*.obj
+*.exp
+*.lib
+
+# Chip simulation output
+*.vcd
+*.fst
+tb_npu
+*.vvp
+chip/openlane/runs/
+
+# Training artefacts (weights go to Hugging Face, not Git)
+training/checkpoints/
+*.pt
+*.safetensors
+train.log
+bench_results.csv
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

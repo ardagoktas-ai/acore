@@ -1,0 +1,87 @@
+{
+  "founder": {
+    "name_note": "[TODO: my full name]",
+    "age": 16,
+    "location": "Aksaray, Turkey",
+    "setup": "solo founder, stealth mode",
+    "previous_work": "Lossrun AI: a 157M-parameter hybrid Mamba-2 + attention model that I trained in 6 days and deployed live",
+    "vision": "a vertically integrated stack designed from first principles: my own reasoning core (Acore), my own NPU and ISA, and my own CUDA-style software stack, built fabless instead of with brute-force GPU clusters",
+    "audience": "Cory Levy, founder of Z Fellows"
+  },
+  "Acore v5.0": {
+    "status": "VERIFIED",
+    "stop_reason": "GOAL REACHED",
+    "iterations": 26,
+    "tests": "25/25",
+    "baseline_seconds": 0.781,
+    "best_seconds": 0.4736,
+    "best_seconds_display": "0.474 s",
+    "speedup": 1.65,
+    "goal_under_seconds": 0.5,
+    "goal_met": true,
+    "native_driver": true,
+    "pure_python_fallback": "25/25 (100.0%) in 0.560s",
+    "accepted_changes": 7,
+    "timing_note": "suite's internal timer, fastest of several runs, measured on my own CPU",
+    "spent_usd": 6.7497
+  },
+  "Chip v2.0": {
+    "status": "VERIFIED",
+    "stop_reason": "all checks pass",
+    "turns": 2,
+    "cycles": {
+      "n=1,A=4": 10,
+      "n=7,A=4": 16,
+      "n=33,A=4": 42,
+      "n=64,A=8": 73,
+      "n=5,A=1": 14
+    },
+    "simulator": "Icarus Verilog",
+    "spent_usd": 0.5972
+  },
+  "Driver v2.0": {
+    "status": "VERIFIED",
+    "stop_reason": "all checks pass",
+    "turns": 2,
+    "backends": {
+      "ref": {
+        "max_abs_error": 0.014062233901086074,
+        "timed_n": 512,
+        "us_per_call_a4": 54.18,
+        "ok": true
+      }
+    },
+    "spent_usd": 0.7224,
+    "note": "re-verified after Acore was linked to the driver"
+  },
+  "AI v1.5": {
+    "status": "VERIFIED",
+    "stop_reason": "all checks pass",
+    "turns": 7,
+    "smoke": {
+      "loss_start": 7.0234,
+      "loss_end": 6.2045
+    },
+    "spent_usd": 1.8012
+  },
+  "Release files": {
+    "status": "VERIFIED",
+    "stop_reason": "all checks pass",
+    "turns": 2,
+    "spent_usd": 0.3014
+  },
+  "Pitch texts": {
+    "status": "VERIFIED",
+    "stop_reason": "all checks pass",
+    "turns": 2,
+    "spent_usd": 0.116
+  },
+  "Acore Studio": {
+    "status": "VERIFIED",
+    "stop_reason": "all checks pass",
+    "turns": 2,
+    "contract_checks": "19/19 passed",
+    "kind": "interactive research interface; natural-language questions are answered from Acore's own learned model by a rule-based language layer (no LLM)",
+    "spent_usd": 0.732
+  }
+}

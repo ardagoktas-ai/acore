@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Acore Studio - research prototype</title>
+<style>
+body{font-family:system-ui,sans-serif;margin:0;background:#14161a;color:#ddd}
+header{padding:10px 16px;background:#1e2128;border-bottom:1px solid #333}
+header h1{margin:0;font-size:18px}
+main{display:flex;gap:16px;padding:16px;flex-wrap:wrap}
+section{background:#1e2128;border:1px solid #333;border-radius:6px;padding:12px}
+#left{flex:1;min-width:320px}#right{flex:1;min-width:320px}
+#grid{display:inline-grid;gap:2px;margin-top:10px}
+.cell{width:28px;height:28px;display:flex;align-items:center;justify-content:center;font:bold 13px monospace;border-radius:3px;color:#000}
+button,select,input{background:#2a2e37;color:#ddd;border:1px solid #444;border-radius:4px;padding:4px 8px}
+#chat{height:300px;overflow-y:auto;border:1px solid #333;padding:6px;margin-bottom:6px;background:#16181d}
+.q{color:#8cf;margin-top:6px}.a{margin-left:10px}.meta{color:#888;font-size:11px}
+#laws li{margin-bottom:4px}#status{color:#aaa;font-size:12px;margin-top:8px;white-space:pre-wrap}
+</style>
+</head>
+<body>
+<header><h1>Acore Studio - research prototype</h1></header>
+<main>
+<section id="left">
+ <div>
+  World <select id="world"></select>
+  Seed <input id="seed" type="number" value="0" style="width:60px">
+  <button onclick="newWorld()">Load world</button>
+  <button onclick="step()">Step</button>
+  Episodes <input id="eps" type="number" value="5" style="width:50px">
+  <button onclick="run()">Run</button>
+  <button onclick="resetAgent()">Reset agent</button>
+ </div>
+ <div id="grid"></div>
+ <div id="status"></div>
+</section>
+<section id="right">
+ <h3>Ask Acore</h3>
+ <div id="chat"></div>
+ <form onsubmit="ask();return false;">
+  <input id="q" style="width:75%" placeholder="e.g. what opens the door?">
+  <button>Ask</button>
+ </form>
+ <h3>Laws the engine believes</h3>
+ <ul id="laws"></ul>
+</section>
+</main>
+<script>
+const COLORS={"#":"#555",".":"#2b2f36","A":"#ffd54a","a":"#ffb300","K":"#e0c060","D":"#a0703c","L":"#ff5a36",
+"F":"#7a6aa8","C":"#c08a40","S":"#5fd07a","G":"#7aa0d0","X":"#4ae0c0","T":"#60c0ff","B":"#b0b0b0",
+"P":"#d07ad0","Q":"#ff7aa0","R":"#a0d07a"};
+async function api(path,body){
+ const opt=body===undefined?{}:{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)};
+ const r=await fetch(path,opt);return r.json();
+}
+function drawGrid(g){
+ const el=document.getElementById("grid");el.innerHTML="";
+ if(!g||!g.length)return;
+ el.style.gridTemplateColumns="repeat("+g[0].length+",28px)";
+ for(const row of g)for(const s of row){
+  const d=document.createElement("div");d.className="cell";
+  d.style.background=COLORS[s]||"#900";d.textContent=(s=="."||s=="#")?"":s;el.appendChild(d);
+ }
+}
+function drawSnap(s){
+ if(s.grid)drawGrid(s.grid);
+ const ul=document.getElementById("laws");ul.innerHTML="";
+ for(const l of (s.laws||[])){const li=document.createElement("li");li.textContent=l;ul.appendChild(li);}
+ if(!(s.laws||[]).length){ul.innerHTML="<li>(nothing learned yet)</li>";}
+ document.getElementById("status").textContent="world: "+s.world+"   tick: "+s.tick+"\nstats: "+JSON.stringify(s.stats);
+}
+async function refresh(){drawSnap(await api("/api/snapshot"));}
+async function init(){
+ const w=await api("/api/worlds");const sel=document.getElementById("world");
+ for(const n of w.worlds){const o=document.createElement("option");o.value=n;o.textContent=n;if(n==w.current)o.selected=true;sel.appendChild(o);}
+ refresh();
+}
+async function newWorld(){
+ drawSnap(await api("/api/new",{world:document.getElementById("world").value,seed:parseInt(document.getElementById("seed").value||"0")}));
+}
+async function step(){const r=await api("/api/step",{});drawGrid(r.grid);
+ const s=await api("/api/snapshot");drawSnap(s);
+ document.getElementById("status").textContent+="\nlast action "+r.action+" reward "+r.reward+(r.done?" (episode done)":"");}
+async function run(){
+ document.getElementById("status").textContent="running...";
+ const r=await api("/api/run",{episodes:parseInt(document.getElementById("eps").value||"1")});
+ drawSnap(r.snapshot);
+ document.getElementById("status").textContent+="\nepisodes: "+r.results.map(e=>e.steps+(e.success?"ok":"x")+(e.hazards?" h"+e.hazards:"")).join(", ");
+}
+async function resetAgent(){drawSnap(await api("/api/reset",{}));}
+async function ask(){
+ const q=document.getElementById("q");const text=q.value.trim();if(!text)return;q.value="";
+ const chat=document.getElementById("chat");
+ const qd=document.createElement("div");qd.className="q";qd.textContent="> "+text;chat.appendChild(qd);
+ const r=await api("/api/ask",{text:text});
+ const ad=document.createElement("div");ad.className="a";ad.textContent=r.answer;chat.appendChild(ad);
+ const md=document.createElement("div");md.className="a meta";md.textContent="source: "+r.source+" | confidence: "+r.confidence;chat.appendChild(md);
+ chat.scrollTop=chat.scrollHeight;
+}
+init();
+</script>
+</body>
+</html>

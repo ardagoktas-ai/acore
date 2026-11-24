@@ -1,0 +1,25 @@
+Subject: 16-year-old solo founder building my own reasoning core, NPU and software stack
+
+Hi Cory,
+
+I am [TODO: my full name], a 16-year-old solo founder from Aksaray, Turkey, working in stealth mode.
+
+What I already shipped: Lossrun AI, a 157M-parameter hybrid Mamba-2 + attention model that I trained in 6 days and deployed live.
+
+What I am building now: a vertically integrated stack designed from first principles: my own reasoning core (Acore), my own NPU with its own ISA, and my own CUDA-style driver stack, built fabless instead of with brute-force GPU clusters.
+
+Tonight's measured results:
+- Acore: all 25 of 25 tests pass, and the suite runs in 0.474 s against a 0.781 s baseline, under my 0.5 s goal (fastest of several runs, measured on my own CPU).
+- Chip: all checks pass in Icarus Verilog. One backup takes 10 cycles for the smallest case (n=1, A=4) and 73 cycles for n=64, A=8.
+- Driver: all checks pass on the reference backend, 54.18 microseconds per call.
+- World model training code: all checks pass; the CPU smoke run brought loss from 7.0234 to 6.2045.
+- Acore Studio, my live demo: people talk to Acore in natural language, and every answer comes from what Acore itself learned. Contract checks: 19/19 passed.
+
+This is not AGI, and I do not claim it is. It is my path toward it: understand every layer, own every layer, and only scale what is proven to work.
+
+I would love to join Z Fellows. The support would let me build the simulation backend for my driver, run the real GPU training, and move my chip toward a tape-out-ready layout.
+
+Thank you for reading.
+
+[TODO: my full name]
+[TODO: my contact]
