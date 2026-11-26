@@ -1,5 +1,11 @@
 # Acore: Predictive Cognitive Core
 
+[![Live Demo & API](https://shields.io🤗%20Hugging%20Face-Live%20Demo%20%26%20API-yellow)](https://huggingface.co)
+[![Model Weights](https://shields.io🤗%20Model-acore--v1-blue)](https://huggingface.co)
+
+### 🚀 Try Live Interactive Demo & API (No Installation)
+👉 **[Launch Acore Live Demo & API on Hugging Face Spaces](https://huggingface.co)**
+
 **Acore** is a 27.58M-parameter predictive cognitive core built from scratch by **Arda Göktaş** (`ardagoktas-ai`) to learn abstract state transitions, reward dynamics, and terminal conditions across diverse environments for zero-shot rollout planning.
 
 - **Model Weights & H100 Benchmarks:** [ardagoktas-ai/acore-v1 on Hugging Face](https://huggingface.coardagoktas-ai/acore-v1)
